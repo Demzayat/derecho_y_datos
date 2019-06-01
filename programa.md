@@ -1,3 +1,6 @@
+
+<!-- rnb-text-begin -->
+
 ---
 title: "Derecho y Datos"
 output:
@@ -136,4 +139,7 @@ Con R también armé un sitio web, en donde fui armando unos breves posts sobre 
 jurídicos que pueden hacerse con datos. Está en pleno proceso, como la vida misma, pero si quieren ir chusmeando, está aca http://www.antidiscriminacion.org 
 
 Nos vemos el martes!
+
+
+<!-- rnb-text-end -->
 
