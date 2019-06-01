@@ -1,11 +1,12 @@
 ---
 title: "Derecho y Datos"
-output: 
-  html_notebook:
-    theme: cerulean
-    toc: true
-    toc_float: true
+output:
+  html_document:
+    df_print: paged
+    toc: yes
     depth: 4
+    theme: cerulean
+    toc_float: yes
 ---
 
 # Presentación
