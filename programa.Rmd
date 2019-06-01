@@ -1,15 +1,17 @@
 ---
 title: "Derecho y Datos"
 output:
-<<<<<<< HEAD
-  html_notebook:
-=======
   html_document:
     df_print: paged
->>>>>>> 246fee0e8a435f2f73b5b6e69d7b5166f9443a6d
     toc: yes
     depth: 4
     theme: cerulean
+    toc_float: yes
+  html_notebook:
+    depth: 4
+    df_print: paged
+    theme: cerulean
+    toc: yes
     toc_float: yes
 ---
 
@@ -129,7 +131,7 @@ Informes y presentaciones. Rmarkdown
 # ¿Qué tipo de análisis empíricos puede hacerse?
 
 Con R también armé un sitio web, en donde fui armando unos breves posts sobre analisis 
-jurídicos que pueden hacerse con datos. Está en pleno proceso, como la vida misma, pero si quieren ir chusmeando, está aca [www.antidiscriminacion.org]
+jurídicos que pueden hacerse con datos. Está en pleno proceso, como la vida misma, pero si quieren ir chusmeando, está aca http://www.antidiscriminacion.org 
 
 Nos vemos el martes!
 
