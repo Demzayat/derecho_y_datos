@@ -1,24 +1,5 @@
 <!-- rnb-text-begin -->
 
-
----
-title: "Derecho y Datos"
-output:
-  html_document:
-    df_print: paged
-    toc: yes
-    depth: 4
-    theme: cerulean
-    toc_float: yes
-    keep_md: yes
-  html_notebook:
-    depth: 4
-    df_print: paged
-    theme: cerulean
-    toc: yes
-    toc_float: yes
----
-
 # Presentación
 
 En el taller de "Derecho y Datos" (martes de 16.30 a 18.30hs, Instituto "Gioja", Facultad de Derecho Universidad de Buenos Aires) vamos a aprender a usar las herramientas de la Ciencia de Datos para la elaboración de investigaciones jurídicas. La idea es poder manipular bases de datos públicas, para obtener datos relevantes para la investigación jurídica.
