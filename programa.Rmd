@@ -8,21 +8,72 @@ output:
     theme: cerulean
     toc_float: yes
     keep_md: yes
-  html_notebook:
-    depth: 4
-    df_print: paged
-    theme: cerulean
-    toc: yes
-    toc_float: yes
+    code_download: yes
+  
 ---
 
-# Presentación
+# Objetivo
 
-En el taller de "Derecho y Datos" (martes de 16.30 a 18.30hs, Instituto "Gioja", Facultad de Derecho Universidad de Buenos Aires) vamos a aprender a usar las herramientas de la Ciencia de Datos para la elaboración de investigaciones jurídicas. La idea es poder manipular bases de datos públicas, para obtener datos relevantes para la investigación jurídica.
+El objetivo del curso de "Derecho y Datos" es introducir las herramientas de la ciencia de datos en ámbitos jurídicos, para facilitar la realización de análisis empíricos cuantitativos en derecho. La cada vez mayor existencia de bases de datos (_Big Data_) nos impone la necesidad de aprender a manejar los datos para poder obtener análisis empíricos con relevancia jurídica. 
 
-Usaremos la herramienta "R" para manipular datos. ¿Qué es R? es un lenguaje de programación para la manipulación estadística de grandes bases de datos, de fuente abierta, muy popular en ámbitos académicos. Para ello, debemos tener instalado el programa, junto con el entorno de trabajo RStudio, y empezar a usarlo.
+La _ciencia jurídica_ estuvo en general desconecta de las investigaciones empíricas, y del uso de datos para hacer análisis sobre políticas públicas o para generar evidencia para las discusiones jurídicas. Esta ausencia se puede observar también en la educación legal tradicional, que tiene poca metodología de la investigación empírica, y en particular, poca investigación cuatitativa. El uso de computadoras para procesar datos, como herramienta de análisis, también estuvo ausente.
 
-# Instalación
+Es por ello que en este curso vamos a aprender a usar las herramientas de la Ciencia de Datos para la elaboración de investigaciones jurídicas. Usaremos el lenguaje "R" (https://www.r-project.org/) para descargar, ordenar, analizar, y visualizar datos. ¿Qué es R? es un lenguaje de programación para el manejo de bases de datos y la realización de análisis estadísticos de grandes bases de datos, de fuente abierta, muy popular en ámbitos académicos. Para ello, deberemos tener instalado el programa, junto con el entorno de trabajo RStudio, y aprender a usarlo. En el curso también aprenderemos algunas nociones sobre  cómo hacer presentaciones e informes con el mismo lenguaje. 
+
+Está orientado a formar abogados analistas de datos, aunque por supuesto, está abierto a otras disciplinas sociales que tengan interés en el manejo de grandes bases de datos.
+
+# Programa
+
+Este curso constará de cinco clases prácticas. En estas clases les alumnes podrán adquirir una noción sobre qué pueden hacer con R, y las primeras nociones sobre cómo hacerlo. Una vez adquiridas estas nociones, cada alumne podrá avanzar en la realización de un análisis propio, con datos que sean de su interés, a modo de trabajo final.
+
+## Clase 1
+Qué es la Ciencia de Datos? Para qué sirve R? ¿Por qué puede ser importante esto? Primer proyecto con datos de mortalidad de la Ciudad de Buenos Aires por comuna.
+Bibliofía: 
+
+- Capítulos 1 y 2 del libro de Antonio Vazquez Brust (AVB)
+
+- Capítulo 1 del libro de Headley Wickham (HW)
+
+## Clase 2
+Manipulación de datos. Verbos del Tidyverse. Segundo proyecto con datos de la Encuesta Anual de Hogares.
+
+- Capítulo 3 del libro de AVB
+
+- Capítulo 5 del libro de HW
+
+## Clase 3
+Finalización de los proyectos anteriores. Introducción a las visulizaciones. GGplot
+
+- Capítulo 4 del libro de AVB
+
+- Capítulo 3 del libro de HW
+
+## Clase 4
+Ggplot y  geolocalización
+
+- Capítulo 6 del libro de AVB
+
+- primeros capítulos del libro _Geocomputation with R_ https://geocompr.robinlovelace.net/
+
+## Clase 5 
+Informes y presentaciones. Rmarkdown. Presentacion de paquetes Blogdown, Xaringan, Spindler.
+
+- Capitulo 27, 28 y 29 del libro de Wickham.
+- primeros capítulos del libro Rmarkdown the definitive guide https://bookdown.org/yihui/rmarkdown/ 
+
+# Bibliografía
+
+En el taller vamos a basarnos principalmente en dos libros. El primero más operativo será el de Antonio Vázquez Brust, _Ciencia de Datos para Gente Sociable_ disponible en el siguiente link https://bitsandbricks.github.io/ciencia_de_datos_gente_sociable/ 
+
+Y asimismo vamos a ir a las fuentes principalesde Hadley Wickham (el _padre fundador_ del paquete Tidyverse, y un referente de RStudio) que escribió este _R for Data Science_ https://r4ds.had.co.nz/.
+
+Este último está en inglés, y recomiendo leerlo allí, siempre que lean inglés. La comunidad R en Latinoamerica, que está creciendo mucho, y en donde Argentina es un país muy relevante, empezó un proyecto de traducción colectiva del libro de Wickham, disponible (al menos la primera parte) aquí: https://es.r4ds.hadley.nz/ 
+
+Luego, hay un montón de bibliografía disponible. El 90% de lo que yo aprendí lo hice leyendo libros online. La filosofía de R es que sea de código abierto, y libremente disponible, y lo mismo sucede con la mayoría de los libros que se escriben sobre ello. De hecho, se puede usar R para escribir un libro, o un blog, o presentaciones, o incluso, este tutorial. Les voy a ir pasando links que me parezcan interesantes.
+
+
+
+# Cómo Instalar R
 
 Vamos a seguir una adaptación de las instrucciones de Laura Acion, de [aquí](https://github.com/lauracion/R_Curso_de_Nivelacion/blob/master/Instalacion_R_RStudio.md#instalaci%C3%B3n-de-r-y-rstudio). 
 
@@ -81,59 +132,8 @@ Dependiendo de tu conexión a internet instalar todos los paquetes podría tomar
 Algunas diapositivas sobre la instalación y un poco más de explicación podes conseguir en este link de R-Ladies de La Pampa, https://github.com/rladies/meetup-presentations_santarosa/raw/master/RdesdeCero/Clase1/RdesdeCero_Clase1.pdf  
 
 
-# Bibliografía
-
-En el taller vamos a basarnos principalmente en dos libros. El primero más operativo, que usaremos como nuestro _manual_  será el de Antonio Vázquez Brust, _Ciencia de Datos para Gente Sociable_ disponible en el siguiente link https://bitsandbricks.github.io/ciencia_de_datos_gente_sociable/ 
-
-Y asimismo vamos a ir a las fuentes principales _el tratado_ de Hadley Wickham (el _padre fundador_ del paquete Tidyverse, y un referente de RStudio) que escribió este _R for Data Science_ https://r4ds.had.co.nz/.
-
-Este último está en inglés, y recomiendo leerlo allí, siempre que lean inglés. La comunidad R en Latinoamerica, que está creciendo mucho, y en donde Argentina es un país muy relevante, empezó un proyecto de traducción colectiva del libro de Wickham, disponible (al menos la primera parte) aquí: https://es.r4ds.hadley.nz/ 
-
-Luego, hay un montón de bibliografía disponible. El 90% de lo que yo aprendí lo hice leyendo libros online. La filosofía de R es que sea de código abierto, y libremente disponible, y lo mismo sucede con la mayoría de los libros que se escriben sobre ello. De hecho, se puede usar R para escribir un libro, o un blog, o presentaciones, o incluso, este tutorial. Les voy a ir pasando links que me parezcan interesantes.
-
-# Programa
-
-Calculo 4 o 5 reuniones para aprender a usar R. De todos modos, la idea del _Taller_ es que sea un lugar donde cada uno pueda desarrollar sus inquietudes de investigación, y que comiencen al menos una investigación empírica de su interés, a partir del análisis de datos. Entonces, veremos despues de estas reuniones iniciales cómo quedar en contacto, para ir discutiendo colectivamente estas investigaciones. Algo que suele ocurrir es que no haya demasiado análisis empírico en derecho, y que si lo hay, no hay casi discusión sobre la metodología, y si la hay, no hay casi nada sobre el proceso de esa metodología. Eso es lo que quiero que hagamos luego, que podamos discutir sobre `el código` utilizado para llevar adelante la investigación. Gracias a R podemos hacerlo
-
-## Clase 1
-Qué es la Ciencia de Datos? Para qué sirve R? ¿Por qué puede ser importante esto?
-Bibliofía: 
-
-- Capítulos 1 y 2 del libro de Antonio
-
-- Capítulo 1 del libro de Wickham
-
-## Clase 2
-Manipulación de datos. Verbos del Tidyverse
-
-- Capítulo 3 del libro de Antonio
-
-- Capítulo 5 del libro de Wickam
-
-## Clase 3
-Visulizaciones. GGplot
-
-- Capítulo 4 del libro de Antonio
-
-- Capítulo 3 del libro de Wickam
-
-## Clase 4
-Mapas y geolocalización
-
-- Capítulo 6 del libro de Antonio
-
-- primeros capítulos del libro _Geocomputation with R_ https://geocompr.robinlovelace.net/
-
-## Clase 5 
-Informes y presentaciones. Rmarkdown
-
-- Capitulo 27, 28 y 29 del libro de Wickham.
-- primeros capítulos del libro Rmarkdown the definitive guide https://bookdown.org/yihui/rmarkdown/ 
-
 # ¿Qué tipo de análisis empíricos puede hacerse?
 
 Con R también armé un sitio web, en donde fui armando unos breves posts sobre analisis 
 jurídicos que pueden hacerse con datos. Está en pleno proceso, como la vida misma, pero si quieren ir chusmeando, está aca http://www.antidiscriminacion.org 
-
-Nos vemos el martes!
 
