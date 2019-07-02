@@ -1,18 +1,4 @@
----
-title: "Derecho y Datos"
-author: "Demian Zayat"
-output:
-  html_document:
-    code_download: yes
-    depth: 4
-    df_print: paged
-    keep_md: yes
-    theme: cerulean
-    toc: yes
-    toc_float: yes
-  pdf_document:
-    toc: no
----
+# _Derecho y Datos_
 
 # Objetivo
 
