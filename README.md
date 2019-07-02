@@ -1,23 +1,5 @@
-<!-- rnb-text-begin -->
 
-
----
-title: "Derecho y Datos"
-output:
-  html_document:
-    df_print: paged
-    toc: yes
-    depth: 4
-    theme: cerulean
-    toc_float: yes
-    keep_md: yes
-  html_notebook:
-    depth: 4
-    df_print: paged
-    theme: cerulean
-    toc: yes
-    toc_float: yes
----
+# "Derecho y Datos"
 
 # Presentación
 
