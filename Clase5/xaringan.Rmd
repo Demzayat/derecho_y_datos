@@ -1,0 +1,127 @@
+---
+title: "Informes y presentaciones"
+subtitle: "con RMarkdown"
+author: "Demián Zayat"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      beforeInit: "macros.js"
+      autoplay: false
+      highlightLines: true
+      countIncrementalSlides: false
+      
+---
+class: center, top
+background-image: url(https://i.kym-cdn.com/photos/images/newsfeed/001/373/608/f6e.jpg)
+background-size: contain
+
+#
+# Comunicar en
+![:scale 25%](https://developer.r-project.org/Logo/Rlogo-1.png)
+---
+class: center
+font-size: small
+![](Screen.png)
+
+slide de David Robinson, https://martakarass.github.io/post/2019-01-26-favs-of-rstudio2019-conference/ 
+
+---
+class: center, middle
+![](https://ih0.redbubble.net/image.543355849.2004/ap,550x550,12x16,1,transparent,t.png)
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(tidyverse)
+```
+---
+class: center, top
+![:scale 30%](https://ih0.redbubble.net/image.543355849.2004/ap,550x550,12x16,1,transparent,t.png)
+# Rmarkdown
+
+
+Es un paquete de R, integrado a *RStudio*, para hacer documentos y compilarlos en HTML, PDF o Word. Dentro del texto se puede insertar `código de R`, y eso es lo que lo convierte en nuestro mejor editor.
+
+---
+class: middle
+font-size: large
+
+Usa el lenguaje _markdown_
+veamos la *cheat_sheet*
+
+https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-spanish.pdf 
+
+---
+class: top
+font-size: 150%
+Creamos un archivo .Rmd
+
+![](https://d33wubrfki0l68.cloudfront.net/96ec0c54c6d64ea2ec3665db9b3b781962ff6339/5cee1/lesson-images/how-3-output.png)
+
+---
+Por ejemplo,
+# Escribimos texto y agregamos un "chunk" (caja) de código. 
+
+--
+"El largo de los sépalos está en relación directa con el ancho de los sépalos, según la especie de las Iris. Eso puede verse en el gráfico 1. 
+--
+
+.pull-left[
+```{r plot-label, fig.show="hide", message = FALSE}
+ggplot(data = iris)+
+  aes(Sepal.Length,
+      Sepal.Width, 
+      color = Species)+
+  geom_point()+
+  labs (title = "Gráfico 1. Largo y ancho de los sépalos,  de acuerdo a las especies",
+  caption = "Fuente: paquete
+  Iris de Ggplot")
+```
+]
+
+--
+.pull-right[
+![](`r knitr::fig_chunk("plot-label", "png")`)
+]
+
+---
+class: middle
+# Inline code
+
+Tambien se puede poner código en la misma línea, entre dos `backstick`, empezando con la letra r y espacio. Por ejemplo...
+--
+.pull-left[
+```{r eval=FALSE, include=TRUE}
+El paquete `_Iris_` tiene 
+`r  nrow(iris)` casos.
+```
+]
+--
+.pull.right[
+El paquete _Iris_ tiene
+`r nrow(iris)` casos.
+]
+
+---
+class: middle
+
+Al compilarlo, realiza lo siguiente:
+![](https://d33wubrfki0l68.cloudfront.net/61d189fd9cdf955058415d3e1b28dd60e1bd7c9b/b739c/lesson-images/rmarkdownflow.png)
+
+Crea documentos en 
+
+- HTML (el más flexible)
+>Desde ya se pueden hacer paginas web
+
+- PDF (requiere tener instalado $Latex$)
+>Es de código abierto, da para probarlo!
+
+- Word(requiere tener instalado Word)
+>Si usan el Word, todo el formato se lo da un archivo `template.doc` donde ponen el formato a los titulos, justificados, etc.
+
+---
+class: middle, center, inverse
+
+# Probemos con un ejemplo propio...
+## `let's code!`
+---
