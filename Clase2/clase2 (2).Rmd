@@ -1,0 +1,209 @@
+---
+title: "Clase 2 - EAH 2018"
+author: "Demian Zayat"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document
+---
+
+En esta clase vamos a trabajar con la Encuesta Anual de Hogares (EAH) de 2018, que realiza periódicamente la Dirección de Estadísticas y Censos del GCBA, disponible en este link https://www.estadisticaciudad.gob.ar/eyc/?p=99567. Primero tendremos que descargar la base, que está disponible públicamente. El archivo Zip contiene dos documentos pdf con la descripción sobre la base y la metodología. El documento ´eah2018_usuarios_documento.pdf´ es clave para conocer la codificación de la base. Luego tiene los archivos ´eah2018_usuarios_ind.txt´ y ´eah2018_usuarios_hog.txt´ con los datos de individuos y hogares encuestados.
+
+Es una muestra estratificada por comunas, que releva información socioeconómica de la población de la Ciudad de Buenos Aires. La base usuaria releva a los individuos, y la base hogares a los hogares. Vamos a usar la de individuos.
+
+Primero vamos a cargar la base y explorarla, a ver su estructura y variables. Habría que instalar el paquete "sf" (`install.packages("sf")`).
+
+```{r setup, message=FALSE}
+library(tidyverse)
+library(sf)
+
+individuos <- read.csv2("/Users/demian/Documents/GitHub/derecho_y_datos/Clase2/eah2018_usuarios_ind.txt")
+
+str(individuos)
+names(individuos)
+dim(individuos)
+```
+
+Vemos que es una base de datos de `r nrow(individuos)` observaciones en `r ncol(individuos)` variables. Es demasiado para manipularlas facilmente. Así que mejor analizamos el glosario con la codificación que  viene en PDF, en el archivo "eah2018_usuarios_documento.pdf". En este proyecto nos vamos a centrar en analizar solo algunas variables de la base usuarios individuos, ustedes pueden despues armar análisis alternativos: 
+
+- Comuna
+- Dominio: Vivienda en villa o no
+- Edad
+- Sexo
+- Estado (condición de actividad)
+- ingtot_2 (ingresos totales)
+- ipc_fb2 (ingreso per capita familiar)
+- nivel (nivel educativo alcanzado)
+- aesc (años de escolaridad)
+- m1_2 (lugar de nacimiento)
+- m3_anio (Año desde que vive en CABA)
+- tipcob2_2 (cobertura de salud)
+- fexp (factor de expansión)
+
+Para ello, debemos seleccionar sólo esas variables y armar una base más chica
+
+```{r}
+individuos_chica <- individuos %>% 
+  select(comuna, dominio, edad, sexo, estado, ingtot_2, ipcfb_2, nivel, aesc, m1_2, m3_anio, tipcob2_2, fexp)
+```
+
+Ahora tenemos `r nrow(individuos_chica)` observaciones, pero de `r ncol(individuos_chica)` variables nomás. 
+
+### Población por sexo
+
+Según el documento metodológico, la muestra de 14.497 individuos representa a los 3.067.990 individuos que habitan en la Ciudad de Buenos Aires. El factor de expansión de la muestra estratificada lo realiza la variable `fexp`, de modo que cada observación representa tanta población como indica el valor `fexp`. Si sumamos eso, nos debería dar toda la ciudad. Probemos: 
+```{r}
+sum(individuos_chica$fexp)
+```
+
+Si queremos ver cuántos varones y cuántas mujeres hay en la Ciudad podemos hacerlo con el verbo `summarize`, asociado al `group_by` con el siguiente código. Primero podríamos recodificar la base para hacerla más facil de comprender. 
+
+```{r, message=FALSE}
+individuos_chica <- individuos_chica %>% 
+  mutate(sexo = recode(sexo,  `1` ="Varones", 
+                              `2` = "Mujeres"))
+
+xsexo <- individuos_chica %>% 
+  group_by(sexo) %>% 
+  summarize(cant = sum(fexp)) %>%  
+  mutate(porc = round(cant/sum(cant)*100,2))
+xsexo
+```
+
+Ahora podemos medir la tasa de actividad, que mide la variable `estado`. Simplemente agrupamos por ´sexo´ y por ´estado´. Antes podemos recodificar la base con los estados.
+
+```{r}
+individuos_chica <- individuos_chica %>% 
+  mutate(estado = recode(estado,  `1` ="Ocupado", 
+                       `2` = "Desocupado",
+                       `3` = "Inactivo"))
+xactividad <- individuos_chica %>% 
+  group_by(sexo, estado) %>% 
+  summarize (cant = sum(fexp)) %>% 
+  mutate(porc = round(cant/sum(cant)*100,2))
+
+xactividad
+```
+
+Y lo graficamos
+
+```{r grafico1, fig.width=6}
+ggplot(data = xactividad, aes(x = sexo, y = porc, group = sexo))+
+  geom_col(aes(fill = estado))+
+  geom_text(aes(label = paste0(porc,"%"), y = porc-2), position = "stack")+
+  labs(subtitle = "Condición de Actividad población total CABA, 2018",
+       y = "", x= "", fill = "Estado")+
+  theme_bw()
+```
+
+### Migrantes
+Y la población migrante en la CABA, cuánta es?
+```{r}
+individuos_chica <- individuos_chica %>% 
+  mutate(m1_2 = recode(m1_2, 
+                       `1` = "CABA",
+                       `2` = "PBA sin GBA",
+                       `3` = "otra Provincia",
+                       `4` = "Pais no limitrofe",
+                       `5` = "Pais limitrofe y Peru",
+                       `6` = "GBA",
+                       `97` = "otro PBA",
+                       `99` = "NA"))
+
+extranjero <- c("Pais no limitrofe", "Pais limitrofe y Peru")
+individuos_chica <- individuos_chica %>% 
+  mutate(nacionalidad = case_when(m1_2 %in% extranjero ~ "Extranjero",
+                                  TRUE ~ "Nacional"))
+
+xnacionalidad <- individuos_chica %>% 
+  group_by(sexo, nacionalidad) %>% 
+  summarize(cantidad = sum(fexp)) %>% 
+  mutate(porc= round(cantidad/ sum(cantidad)*100,2) )
+```
+
+Y cómo estan distribuidos los migrantes en la Ciudad?
+
+```{r}
+comunas <- read_sf("/Users/demian/Documents/GitHub/derecho_y_datos/Clase2/CABA_comunas.geojson")
+
+xpais <- individuos_chica %>% 
+  group_by(comuna, nacionalidad) %>% 
+  summarize(cantidad = sum(fexp)) %>% 
+  mutate(porc= round(cantidad/ sum(cantidad)*100,2) )
+
+ggplot()+
+  geom_sf(data = comunas, aes(fill = xpais$porc[xpais$nacionalidad == "Extranjero"]))+
+  geom_sf_text(data = comunas, aes(label = comunas))+
+  scale_fill_distiller(direction =1 )+
+  labs(fill = "Porc", title = "Cantidad de Extranjeros en la CABA")
+
+```
+y lo podemos ver en una tabla
+```{r}
+xpais <- individuos_chica %>% 
+  group_by(comuna, nacionalidad) %>% 
+  summarize(cantidad = sum(fexp)) %>% 
+  mutate(porc= round(cantidad/ sum(cantidad)*100,2) )
+
+xpais
+```
+
+
+### Ingresos
+Los ingresos mostrarán alguna diferencia por sexo? Debemos cambiar la variable de agrupamiento de estado por ingresos
+
+```{r}
+xingresos <- individuos_chica %>% 
+  group_by(sexo) %>% 
+  summarize(prom = weighted.mean(ingtot_2, fexp))
+xingresos <- xingresos %>% 
+  mutate(porc = round(prom/xingresos$prom[2]*100,2))
+```
+
+Y podemos analizar los ingresos por comuna
+```{r}
+xingresos_comuna <- individuos_chica %>% 
+  group_by(comuna) %>% 
+  summarize(prom = weighted.mean(ingtot_2, fexp))
+xingresos
+```
+
+Y hacemos un mapa!
+
+```{r message=FALSE, warning=FALSE}
+comunas <- st_read("/Users/demian/Documents/GitHub/derecho_y_datos/Clase1/CABA_comunas.geojson")
+#convierto las comunas a factores
+xingresos_comuna$comuna <- factor(xingresos_comuna$comuna)
+#agrego la geometry al xingresos_comuna
+xingresos_comuna_geo <- comunas %>% 
+  left_join(xingresos_comuna, by = c("comunas" = "comuna"))
+
+#y grafico
+ggplot()+
+  geom_sf(data = xingresos_comuna_geo, aes(fill = prom))+
+  geom_sf_text(data = xingresos_comuna_geo, aes(label = comunas))+
+  scale_fill_distiller(direction = 1)+
+  theme_minimal()
+```
+
+## Existe relación entre años de estudio e ingresos?
+Y por último, podemos analizar esta pregunta tambien en base a los datos de la base. 
+
+```{r, message=FALSE, warning=FALSE}
+anos <- individuos_chica %>% 
+  filter(aesc != 99) %>% 
+  group_by(aesc) %>% 
+  summarize (prom = weighted.mean(ingtot_2, fexp))
+
+ggplot(data = anos, group = aesc)+
+  geom_point(aes(x = aesc, y =  prom))+
+  geom_smooth(aes(x = aesc, y = prom), method = "lm")+
+  labs(title = "Ingresos en virtud de los años de estudio", 
+       x = "Años de estudio", y = "Ingresos promedio")+
+  scale_x_continuous(breaks = seq(0,20,1))+
+  theme_bw()+
+  theme(panel.grid.major = element_blank())
+  
+
+lm(ingtot_2~aesc, data = individuos_chica)
+```
+
